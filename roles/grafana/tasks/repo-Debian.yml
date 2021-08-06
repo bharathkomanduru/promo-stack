@@ -1,0 +1,41 @@
+---
+
+- name: Create Grafana Datasources provisioning files
+  template:
+    src: datasources.yml.j2
+    dest: "{{ grafana_paths_provisioning }}/datasources/datasources.yml"
+    owner: "root"
+    group: "{{ grafana_group }}"
+    mode: 0640
+  notify: restart grafana
+
+- name: Create Grafana Dashboards provisioning files
+  template:
+    src: dashboards.yml.j2
+    dest: "{{ grafana_paths_provisioning }}/dashboards/dashboards.yml"
+    owner: "root"
+    group: "{{ grafana_group }}"
+    mode: 0640
+  notify: restart grafana
+[ec2-user@ip-172-31-29-219 tasks]$ cat repo-Debian.yml
+---
+
+- name: Install gnupg and apt-transport-https
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "gnupg"
+    - "apt-transport-https"
+
+- name: Import the Grafana APT repository key
+  apt_key:
+    url: "{{ grafana_install_repo['apt_gpg_key'] }}"
+    id: "{{ grafana_install_repo['atp_gpg_key_id'] | default('') }}"
+    state: present
+
+- name: Add the Grafana APT repository
+  apt_repository:
+    filename: "{{ grafana_install_repo['name'] }}"
+    repo: "{{ grafana_install_repo['apt_repo'] }}"
+    state: present
