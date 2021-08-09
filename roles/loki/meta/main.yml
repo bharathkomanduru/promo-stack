@@ -1,0 +1,24 @@
+---
+galaxy_info:
+  role_name: loki
+  description: Deploy and configure Loki and Promtail.
+  license: WTFPL
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - xenial
+    - name: Debian
+      versions:
+        - stretch
+        - buster
+  galaxy_tags:
+    - loki
+    - promtail
+    - logging
+    - collector
+    - monitoring
+    - grafana
+    - prometheus
+dependencies: []
